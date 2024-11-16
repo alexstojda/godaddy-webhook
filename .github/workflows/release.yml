@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'The version you want to release (e.g 0.2.0).'
+        description: 'The version you want to release (e.g 0.3.0).'
         required: true
 
 jobs:
@@ -75,7 +75,7 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: snowdrop/cert-manager-webhook-godaddy
-          addLatest: true
+          tags: ${{ steps.tag-chart.outputs.TAG_VERSION }}, latest
           enableBuildKit: true
           multiPlatform: true
           platform: linux/amd64,linux/arm64

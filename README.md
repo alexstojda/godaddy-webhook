@@ -25,12 +25,12 @@ to verify if the provider hosts the domain you are requesting a certificate.
 
 This project supports the following versions of the certificate manager:
 
-| Certificate Manager | Godaddy webhook |
-|---------------------|-----------------|
-| [1.6 - 1.12]        | v0.1.0          | 
-| [> 1.13]            | v0.2.0          | 
+| Certificate Manager | Godaddy webhook    |
+|--------------------|--------------------|
+| [1.6 - 1.12]       | v0.1.0             | 
+| [> 1.13]           | [v0.2.0 .. v0.5.0] |
 
-**Remark**: The Helm chart `AppVersion` like the image `version` are tagged according to the version used to release this project: v0.1.0, v0.2.0. When using the main branch, the Helm chart will install the latest image pushed on [quay.io](https://quay.io/repository/snowdrop/cert-manager-webhook-godaddy)
+**Remark**: The Helm chart `AppVersion` like the image `version` are tagged according to the version used to release this project: v0.1.0, v0.2.0, etc. When using the main branch, the Helm chart will install the latest image pushed on [quay.io](https://quay.io/repository/snowdrop/cert-manager-webhook-godaddy)
 
 ## Governance
 
@@ -258,8 +258,11 @@ or the following `make` command
 ```bash
 make test TEST_ZONE_NAME=<YOUR_DOMAIN.NAME>
 ```
-**IMPORTANT**: As godaddy server could be very slow to reply, it could be needed to increase the TTL defined within the `config.json` file. The test could also fail
-as the kube api server is currently finalizing the deletion of the namespace `"spec":{"finalizers":["kubernetes"]},"status":{"phase":"Terminating"}}`
+#### Common testing issues
+
+- As godaddy server could be very slow to reply, it could be needed to increase the TTL defined within the `config.json` file. 
+  - If increasing the TTL does not solve the issue, you can also try overriding the DNS server used for testing by setting the `TEST_DNS_SERVER` environment variable to match one of the name servers used by your domain. Ex `TEST_DNS_SERVER="pdns01.domaincontrol.com:53"`
+- The test could also fail as the kube api server is currently finalizing the deletion of the namespace `"spec":{"finalizers":["kubernetes"]},"status":{"phase":"Terminating"}}`
 
 ### Generate the container image
 
